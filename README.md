@@ -5,7 +5,7 @@ A simple commandline tool to cluster handbrake file processing
 
 
 How to Use (work in prgress)
-=============================
+----------------------------
 
 on your master node, create an private MSMQ named HandbrakeCluster
 copy handbrakecluster to each of your nodes
