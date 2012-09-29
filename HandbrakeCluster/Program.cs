@@ -40,6 +40,7 @@ namespace HandbrakeCluster
                         Console.WriteLine("Recieved message. Commandline: {0}", cmdLine);
                         Console.WriteLine("Starting at {0}", DateTime.Now);
                         Stopwatch st = new Stopwatch();
+                        st.Start();
                         p.StartInfo = new ProcessStartInfo() { Arguments = cmdLine, UseShellExecute = true, FileName = ConfigurationManager.AppSettings["HandbrakeEXE"] };//, RedirectStandardOutput = true, RedirectStandardError = true,  };
                         p.Start();
                         p.WaitForExit();
