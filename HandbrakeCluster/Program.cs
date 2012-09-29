@@ -19,50 +19,36 @@ namespace HandbrakeCluster
             try
             {
                 MessageQueue rmTxnQ = new MessageQueue("FormatName:Direct=TCP:192.168.0.101\\Private$\\HandbrakeCluster");
-                rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
-                
-                MessageQueueTransaction msgTx = new MessageQueueTransaction();
-                msgTx.Begin();
-                    try
-                    {
+
+                while (rmTxnQ.CanRead)
+                {
                     rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
 
-                    System.Messaging.Message msgTxn = rmTxnQ.Receive(MessageQueueTransactionType.Single);
-                   
-                    ProcessMessage msg = (ProcessMessage)msgTxn.Body;
-                    
-                    Process p = new Process();
+                    MessageQueueTransaction msgTx = new MessageQueueTransaction();
+                    msgTx.Begin();
+                    try
+                    {
+                        rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
 
-                    string cmdLine = string.Format(msg.CommandLine, msg.OrignalFileURL, msg.DestinationURL);
+                        System.Messaging.Message msgTxn = rmTxnQ.Receive(MessageQueueTransactionType.Single);
 
-                    p.StartInfo = new ProcessStartInfo() { Arguments = cmdLine, UseShellExecute = true, FileName = ConfigurationManager.AppSettings["HandbrakeEXE"]};//, RedirectStandardOutput = true, RedirectStandardError = true,  };
-                    p.Start();
-                    
-                    //string err;                   
-                    //Console.WriteLine("ERRORS!");
-                    //p.BeginOutputReadLine();
-                    
-                    //while ((err = p.StandardError.ReadLine()) != null)
-                    //{
-                    //    Console.WriteLine(err);
-                    //}                
-                    
-                    
-                    //Console.WriteLine("Standard Output");
-                    //string str;
-                    //while ((str = p.StandardOutput.ReadLine()) != null)
-                    //{
-                    //    Console.WriteLine(str);
-                    //}
+                        ProcessMessage msg = (ProcessMessage)msgTxn.Body;
 
-                    
-                    p.WaitForExit();
-                    msgTx.Commit();
-                    
-                }
-                catch
-                {
-                    msgTx.Abort();
+                        Process p = new Process();
+
+                        string cmdLine = string.Format(msg.CommandLine, msg.OrignalFileURL, msg.DestinationURL);
+
+                        p.StartInfo = new ProcessStartInfo() { Arguments = cmdLine, UseShellExecute = true, FileName = ConfigurationManager.AppSettings["HandbrakeEXE"] };//, RedirectStandardOutput = true, RedirectStandardError = true,  };
+                        p.Start();
+
+                        p.WaitForExit();
+                        msgTx.Commit();
+
+                    }
+                    catch
+                    {
+                        msgTx.Abort();
+                    }
                 }
             }
             catch (Exception ex)
