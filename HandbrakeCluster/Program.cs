@@ -18,7 +18,7 @@ namespace HandbrakeCluster
         {
             try
             {
-                MessageQueue rmTxnQ = new MessageQueue("FormatName:Direct=TCP:192.168.0.101\\Private$\\HandbrakeCluster");
+                MessageQueue rmTxnQ = new MessageQueue(ConfigurationManager.AppSettings["MSMQLocation"]);
 
                 while (rmTxnQ.CanRead)
                 {
@@ -37,16 +37,19 @@ namespace HandbrakeCluster
                         Process p = new Process();
 
                         string cmdLine = string.Format(msg.CommandLine, msg.OrignalFileURL, msg.DestinationURL);
-
+                        Console.WriteLine("Recieved message. Commandline: {0}", cmdLine);
+                        Console.WriteLine("Starting at {0}", DateTime.Now);
+                        Stopwatch st = new Stopwatch();
                         p.StartInfo = new ProcessStartInfo() { Arguments = cmdLine, UseShellExecute = true, FileName = ConfigurationManager.AppSettings["HandbrakeEXE"] };//, RedirectStandardOutput = true, RedirectStandardError = true,  };
                         p.Start();
-
                         p.WaitForExit();
+                        Console.WriteLine("Finsihed at {0} - Total time: {1}", DateTime.Now, st.Elapsed);
                         msgTx.Commit();
 
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        Console.WriteLine("Somethign went wrong... {0}", ex.Message);
                         msgTx.Abort();
                     }
                 }

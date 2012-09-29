@@ -4,3 +4,4 @@ obj
 *.suo
 # mstest test results
 TestResults
+*.user
