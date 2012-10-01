@@ -27,12 +27,16 @@ on your head node, run the "adder" program with the following params
 * where you want the finished files places (file share)
 * file extention (.m4v or .mp4 as example)
 
-example: HandBrakeClusterAdder \\NAS\TVShows\CSI\ *.avi \\NAS\iTunesWatchFolder .m4v
+example: HandBrakeClusterAdder \\\\NAS\TVShows\CSI\ *.avi \\\\NAS\iTunesWatchFolder .m4v
 
-If you have spaces in your folder names, you must wrap them with quotes (eg "\\NAS\TV Shows\CSI")
+If you have spaces in your folder names, you must wrap them with quotes (eg "\\\\NAS\TV Shows\CSI")
 
 on each node, change config to point to correct path for HandBrake (x64 or x86 supported, point at HandbrakeCLI.exe) and also set the location of your MSMQ queue... 
 
 run the program...
 
 I have tested this on Domain Joined machines, so each machine knew each other and could talk without issues. Also, the EXE was run as Admin, but not sure if thats required.
+
+[1]:http://www.microsoft.com/en-us/download/details.aspx?id=30653
+[2]:http://msdn.microsoft.com/en-us/library/aa967729.aspx
+[3]:http://handbrake.fr/
