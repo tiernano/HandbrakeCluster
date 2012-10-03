@@ -20,3 +20,11 @@ on each node, change config to point to correct path for HandBrake (x64 or x86 s
 run the program...
 
 you will need MSMQ on each machine, and each machine needs to see the head node...
+
+GUI Tool
+--------
+The GUI tool is a WPF app which takes a few minor paramaters...
+
+* destionation is where you want the files to go (file share)
+* drag and drop the files directly into the window and they will be added
+* click the add button and they will be written to the queue.
