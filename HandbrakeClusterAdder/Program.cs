@@ -15,7 +15,13 @@ namespace HandbrakeClusterAdder
         static void Main(string[] args)
         {
             string queueName = ConfigurationManager.AppSettings["MSMQLocation"];
-           
+
+            if (args.Count() != 4)
+            {
+                Console.WriteLine("needs 4 params: sourcedir sourcefiletypes dstdir dstfileformat");
+                return;
+            }
+
             try
             {
                 MessageQueue rmTxnQ = new MessageQueue(queueName);

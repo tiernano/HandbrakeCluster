@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.EnterpriseServices;
-using System.IO;
 using System.Linq;
 using System.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using Cluster.Common;
 
 namespace HandbrakeCluster
@@ -19,7 +14,8 @@ namespace HandbrakeCluster
             try
             {
                 MessageQueue rmTxnQ = new MessageQueue(ConfigurationManager.AppSettings["MSMQLocation"]);
-
+                
+                Console.WriteLine("I CAN READZ MSMQ?: {0}", rmTxnQ.CanRead);
                 while (rmTxnQ.CanRead)
                 {
                     rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
@@ -50,7 +46,7 @@ namespace HandbrakeCluster
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine("Somethign went wrong... {0}", ex.Message);
+                        Console.WriteLine("Something went wrong... {0}", ex.Message);
                         msgTx.Abort();
                     }
                 }
@@ -65,7 +61,6 @@ namespace HandbrakeCluster
 
   
 }
-
 
 namespace Cluster.Common
 {
