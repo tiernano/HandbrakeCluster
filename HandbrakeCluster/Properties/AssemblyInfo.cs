@@ -6,13 +6,14 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HandbrakeCluster")]
-[assembly: AssemblyDescription("Handbrake Cluster Runer")]
+[assembly: AssemblyDescription("Tool to spin handbrake tasks off to multiple machines")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LSN")]
-[assembly: AssemblyProduct("HandbrakeCluster")] 
-[assembly: AssemblyCopyright("Copyright Tiernan OToole ©  2012")]
+[assembly: AssemblyCompany("Tiernan OToole")]
+[assembly: AssemblyProduct("HandbrakeCluster")]
+[assembly: AssemblyCopyright("Copyright © TiernanOToole.ie  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -32,5 +33,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.*")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
