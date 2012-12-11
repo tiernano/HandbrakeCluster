@@ -43,7 +43,8 @@ The GUI tool is a WPF app which takes a few minor paramaters...
 
 * destionation is where you want the files to go (file share)
 * drag and drop the files directly into the window and they will be added
-* click the add button and they will be written to the queue.
+* click the add button and they will be written to the queue
+
 =======
 I have tested this on Domain Joined machines, so each machine knew each other and could talk without issues. Also, the EXE was run as Admin, but not sure if thats required.
 
