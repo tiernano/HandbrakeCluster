@@ -7,8 +7,8 @@
     <ProjectGuid>{5179E81A-F170-4742-AD75-5C99827A2E30}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HandbrakeClusterAdder</RootNamespace>
-    <AssemblyName>HandbrakeClusterAdder</AssemblyName>
+    <RootNamespace>HandbrakeCluster.Adder</RootNamespace>
+    <AssemblyName>HandbrakeCluster.Adder</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcessMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

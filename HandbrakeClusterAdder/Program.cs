@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using Cluster.Common;
+using HandbrakeCluster.Common;
 
-namespace HandbrakeClusterAdder
+namespace HandbrakeCluster.Adder
 {
     class Program
     {
@@ -40,7 +37,7 @@ namespace HandbrakeClusterAdder
 
                         string destination = args[2] + "\\" + Path.GetFileNameWithoutExtension(s) + args[3];
 
-                        ProcessMessage p = new ProcessMessage() { CommandLine = argument, DestinationURL = destination, OrignalFileURL = s };
+                        ProcessMessage p = new ProcessMessage() { CommandLine = argument, DestinationUrl = destination, OrignalFileUrl = s };
 
                         rmTxnQ.Send(p, msgTx);
                         Console.WriteLine("Adding message for {0} to queue", s);
@@ -59,20 +56,8 @@ namespace HandbrakeClusterAdder
             {
                 Console.WriteLine(ex.Message);
             }
-            
         }
     }
-
-
-    
 }
 
-namespace Cluster.Common
-{
-    public class ProcessMessage
-    {
-        public string OrignalFileURL { get; set; }
-        public string DestinationURL { get; set; }
-        public string CommandLine { get; set; }
-    }
-}
+

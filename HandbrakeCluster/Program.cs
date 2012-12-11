@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Messaging;
-using Cluster.Common;
+using HandbrakeCluster.Common;
 
 namespace HandbrakeCluster
 {
@@ -62,7 +62,7 @@ namespace HandbrakeCluster
   
 }
 
-namespace Cluster.Common
+namespace HandbrakeCluster.Common
 {
     public class ProcessMessage
     {
