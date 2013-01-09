@@ -4,15 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Messaging;
 using HandbrakeCluster.Common;
+using RabbitMQ.Client;
 
 namespace HandbrakeCluster.Adder
 {
     class Program
     {
+       
+
         static void Main(string[] args)
         {
-            string queueName = ConfigurationManager.AppSettings["MSMQLocation"];
-
+            string queueName = ConfigurationManager.AppSettings["RabbitMQQueue"];
+            string queueHost = ConfigurationManager.AppSettings["RabbitMQHost"];
+            
             if (args.Count() != 4)
             {
                 Console.WriteLine("needs 4 params: sourcedir sourcefiletypes dstdir dstfileformat");
@@ -21,9 +25,9 @@ namespace HandbrakeCluster.Adder
 
             try
             {
-                MessageQueue rmTxnQ = new MessageQueue(queueName);
-
-                rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
+                var connFact = new ConnectionFactory();
+                connFact.HostName = queueHost;
+                
 
                 string[] files = Directory.GetFiles(args[0], args[1], SearchOption.AllDirectories);
                 int count = 0;

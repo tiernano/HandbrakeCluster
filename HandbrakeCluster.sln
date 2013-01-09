@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandbrakeCluster.Adder", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandbrakeCluster.GUITool", "HandbrakeClusterGUITool\HandbrakeCluster.GUITool.csproj", "{BF04EA89-A6B5-446D-9916-AA5E57FBDA2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandbrakeCluster.Producer", "HandbrakeCluster.Producer\HandbrakeCluster.Producer.csproj", "{1E308EB7-53E9-4786-8090-D07C2CFF4FE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandbrakeCluster.Consumer", "HandbrakeCluster.Consumer\HandbrakeCluster.Consumer.csproj", "{4E6D9206-625D-4B88-948D-078327DA80E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{BF04EA89-A6B5-446D-9916-AA5E57FBDA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF04EA89-A6B5-446D-9916-AA5E57FBDA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF04EA89-A6B5-446D-9916-AA5E57FBDA2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E308EB7-53E9-4786-8090-D07C2CFF4FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E308EB7-53E9-4786-8090-D07C2CFF4FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E308EB7-53E9-4786-8090-D07C2CFF4FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E308EB7-53E9-4786-8090-D07C2CFF4FE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6D9206-625D-4B88-948D-078327DA80E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6D9206-625D-4B88-948D-078327DA80E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6D9206-625D-4B88-948D-078327DA80E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6D9206-625D-4B88-948D-078327DA80E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
