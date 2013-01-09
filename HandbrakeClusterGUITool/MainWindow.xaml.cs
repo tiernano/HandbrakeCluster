@@ -5,6 +5,8 @@ using System.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 using HandbrakeCluster.Common;
+using System.IO;
+using ProtoBuf;
 
 namespace HandbrakeCluster.GUITool
 {
@@ -41,16 +43,12 @@ namespace HandbrakeCluster.GUITool
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
 
-            string queueName = ConfigurationManager.AppSettings["MSMQLocation"];
-
-            MessageQueue rmTxnQ = new MessageQueue(queueName);
-
-            rmTxnQ.Formatter = new XmlMessageFormatter(new Type[] { typeof(ProcessMessage) });
-
+            string queueName = ConfigurationManager.AppSettings["RabbitMQQueue"];
+            string queueHost = ConfigurationManager.AppSettings["RabbitMQHost"];
+            Producer.Producer prod = new Producer.Producer(queueHost, queueName);
             foreach (ListBoxItem itm in files.Items)
             {
-                MessageQueueTransaction msgTx = new MessageQueueTransaction();
-                msgTx.Begin();
+               
                 try
                 {
                     string argument = "-i \"{0}\" -o \"{1}\" --preset \"" + ConfigurationManager.AppSettings["HandbrakePreset"] + "\"";
@@ -59,27 +57,21 @@ namespace HandbrakeCluster.GUITool
 
                     ProcessMessage p = new ProcessMessage() { CommandLine = argument, DestinationURL = destination, OrignalFileURL = itm.ToolTip.ToString() };
 
-                    rmTxnQ.Send(p, msgTx);
-                    results.Items.Insert(0, string.Format("{0} added to queue", p.OrignalFileURL));
-                   
-                    msgTx.Commit();
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Serializer.Serialize(ms, p);
+                        byte[] message = ms.ToArray();
+                        prod.SendMessage(message);
+                    }
+
                 }
                 catch (Exception ex)
                 {
                     results.Items.Insert(0, ex.Message);
-                    msgTx.Abort();
+                    
                 }
             }
         }
     }
 }
 
-namespace HandbrakeCluster.Common
-{
-    public class ProcessMessage
-    {
-        public string OrignalFileURL { get; set; }
-        public string DestinationURL { get; set; }
-        public string CommandLine { get; set; }
-    }
-}

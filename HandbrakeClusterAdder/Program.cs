@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Messaging;
 using HandbrakeCluster.Common;
-using RabbitMQ.Client;
+using ProtoBuf;
+
 
 namespace HandbrakeCluster.Adder
 {
     class Program
     {
-       
-
         static void Main(string[] args)
         {
             string queueName = ConfigurationManager.AppSettings["RabbitMQQueue"];
@@ -25,16 +24,12 @@ namespace HandbrakeCluster.Adder
 
             try
             {
-                var connFact = new ConnectionFactory();
-                connFact.HostName = queueHost;
-                
+                Producer.Producer prod = new Producer.Producer(queueHost, queueName);
 
                 string[] files = Directory.GetFiles(args[0], args[1], SearchOption.AllDirectories);
                 int count = 0;
                 foreach (string s in files)
-                {
-                    MessageQueueTransaction msgTx = new MessageQueueTransaction();
-                    msgTx.Begin();
+                {                    
                     try
                     {
                         string argument = "-i \"{0}\" -o \"{1}\" --preset \"" + ConfigurationManager.AppSettings["HandbrakePreset"] + "\"";
@@ -43,18 +38,24 @@ namespace HandbrakeCluster.Adder
 
                         ProcessMessage p = new ProcessMessage() { CommandLine = argument, DestinationUrl = destination, OrignalFileUrl = s };
 
-                        rmTxnQ.Send(p, msgTx);
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            Serializer.Serialize(ms, p);
+                            byte[] message = ms.ToArray();
+                            prod.SendMessage(message);
+                        }
+
                         Console.WriteLine("Adding message for {0} to queue", s);
                         count++;
-                        msgTx.Commit();
+                        
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        msgTx.Abort();
+                        
                     }
                 }
-                Console.WriteLine("added {0} items to queue. Queue count now {1}", count, rmTxnQ.GetAllMessages().Count());
+                Console.WriteLine("added {0} items to queue.", count);
             }
             catch (Exception ex)
             {
