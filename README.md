@@ -1,13 +1,17 @@
 HandbrakeCluster
 ================
 
-A simple commandline tool to cluster handbrake file processing
+A simple commandline tool to cluster handbrake file processing. 
+
+[UPDATE] We have a new site, Hosted by Codeplex at [http://handbrakecluster.codeplex.com/][5]
 
 
 Requirements
 ============
 
 to use, you need [.NET Framework 4.5][1], [MSMQ][2] installed on your client and server machines, and [Handbrake][3] installed on each node. 
+
+If you are using the RabbitMQ Branch, ignore the MSMQ requirement, and instead install [RabbitMQ][4] on your head node. Each client should have the required DLLs in the project.
 
 How to Use (work in prgress)
 ============================
@@ -48,6 +52,10 @@ The GUI tool is a WPF app which takes a few minor paramaters...
 =======
 I have tested this on Domain Joined machines, so each machine knew each other and could talk without issues. Also, the EXE was run as Admin, but not sure if thats required.
 
+[UPDATED] if using the RabbitMQ branch, domain joined is not a requirement, but firewall rules for the RabbitMQ server need to be allowed.
+
 [1]:http://www.microsoft.com/en-us/download/details.aspx?id=30653
 [2]:http://msdn.microsoft.com/en-us/library/aa967729.aspx
 [3]:http://handbrake.fr/
+[4]:http://www.rabbitmq.com/
+[5]:http://handbrakecluster.codeplex.com/
