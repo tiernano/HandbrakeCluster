@@ -4,6 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Messaging;
 using HandbrakeCluster.Common;
+<<<<<<< HEAD
+=======
+using ProtoBuf;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Globalization;
+>>>>>>> eb07953... parsing the result from Handbrake
 
 namespace HandbrakeCluster
 {
@@ -98,15 +105,16 @@ namespace HandbrakeCluster
         static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
-            ShowOutput(e.Data, ConsoleColor.Green, "Info");
+
+            ShowOutput(e.Data, ConsoleColor.Red, "Error");
 
         }
 
         static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
-
             //most of this block of code was taken from the Handbrake App... (C) the handbrake guys...
+
              Match m = Regex.Match(e.Data,@"^Encoding: task ([0-9]*) of ([0-9]*), ([0-9]*\.[0-9]*) %( \(([0-9]*\.[0-9]*) fps, avg ([0-9]*\.[0-9]*) fps, ETA ([0-9]{2})h([0-9]{2})m([0-9]{2})s\))?");
 
              if (m.Success)
