@@ -81,6 +81,8 @@ namespace HandbrakeCluster
         static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
+
+            //most of this block of code was taken from the Handbrake App... (C) the handbrake guys...
              Match m = Regex.Match(e.Data,@"^Encoding: task ([0-9]*) of ([0-9]*), ([0-9]*\.[0-9]*) %( \(([0-9]*\.[0-9]*) fps, avg ([0-9]*\.[0-9]*) fps, ETA ([0-9]{2})h([0-9]{2})m([0-9]{2})s\))?");
 
              if (m.Success)
