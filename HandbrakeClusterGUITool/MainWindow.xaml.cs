@@ -62,13 +62,13 @@ namespace HandbrakeCluster.GUITool
                         Serializer.Serialize(ms, p);
                         byte[] message = ms.ToArray();
                         prod.SendMessage(message);
+                        results.Items.Insert(0, itm.ToolTip.ToString());
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    results.Items.Insert(0, ex.Message);
-                    
+                    results.Items.Insert(0, ex.Message);                    
                 }
             }
         }

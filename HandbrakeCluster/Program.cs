@@ -44,8 +44,20 @@ namespace HandbrakeCluster
                 Console.WriteLine("Starting at {0}", DateTime.Now);
                 Stopwatch st = new Stopwatch();
                 st.Start();
-                p.StartInfo = new ProcessStartInfo() { Arguments = cmdLine, UseShellExecute = true, FileName = ConfigurationManager.AppSettings["HandbrakeEXE"] };//, RedirectStandardOutput = true, RedirectStandardError = true,  };
+                p.StartInfo = new ProcessStartInfo() { 
+                        Arguments = cmdLine, 
+                        UseShellExecute = false, 
+                        FileName = ConfigurationManager.AppSettings["HandbrakeEXE"],
+                        RedirectStandardOutput = true, 
+                        RedirectStandardError = true
+                };
+                p.OutputDataReceived += p_OutputDataReceived;
+
+                p.ErrorDataReceived += p_ErrorDataReceived;
+
                 p.Start();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
                 p.WaitForExit();
                 Console.WriteLine("Finsihed at {0} - Total time: {1}", DateTime.Now, st.Elapsed);                
             }
@@ -53,6 +65,30 @@ namespace HandbrakeCluster
             {
                 Console.WriteLine("Something went wrong... {0}", ex.Message);
                 throw;
+            }
+        }
+
+        static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
+            ShowOutput(e.Data, ConsoleColor.Green, "Info");
+
+        }
+
+        static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
+            ShowOutput(e.Data, ConsoleColor.Red, "ERROR");
+        }
+
+        static void ShowOutput(string data, ConsoleColor color, string type)
+        {
+            if (data != null)
+            {
+                ConsoleColor oldColor = Console.ForegroundColor;
+                Console.ForegroundColor = color;
+                Console.WriteLine("{1}: {0}", data, type);
+                Console.ForegroundColor = oldColor;
             }
         }
     }
