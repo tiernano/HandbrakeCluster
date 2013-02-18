@@ -59,6 +59,7 @@ namespace HandbrakeCluster.GUITool
 
                     ProcessMessage p = new ProcessMessage() { CommandLine = argument, DestinationURL = destination, OrignalFileURL = itm.ToolTip.ToString() };
 
+
                     rmTxnQ.Send(p, msgTx);
                     results.Items.Insert(0, string.Format("{0} added to queue", p.OrignalFileURL));
                    
