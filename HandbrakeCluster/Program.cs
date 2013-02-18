@@ -6,6 +6,8 @@ using System.Messaging;
 using HandbrakeCluster.Common;
 using ProtoBuf;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace HandbrakeCluster
 {
@@ -71,14 +73,42 @@ namespace HandbrakeCluster
         static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
-            ShowOutput(e.Data, ConsoleColor.Green, "Info");
+
+            ShowOutput(e.Data, ConsoleColor.Red, "Error");
 
         }
 
         static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
-            ShowOutput(e.Data, ConsoleColor.Red, "ERROR");
+             Match m = Regex.Match(e.Data,@"^Encoding: task ([0-9]*) of ([0-9]*), ([0-9]*\.[0-9]*) %( \(([0-9]*\.[0-9]*) fps, avg ([0-9]*\.[0-9]*) fps, ETA ([0-9]{2})h([0-9]{2})m([0-9]{2})s\))?");
+
+             if (m.Success)
+             {
+                 int currentTask = int.Parse(m.Groups[1].Value);
+                 int totalTasks = int.Parse(m.Groups[2].Value);
+                 float percent = float.Parse(m.Groups[3].Value, CultureInfo.InvariantCulture);
+                 float currentFps = m.Groups[5].Value == string.Empty
+                                        ? 0.0F
+                                        : float.Parse(m.Groups[5].Value, CultureInfo.InvariantCulture);
+                 float avgFps = m.Groups[6].Value == string.Empty
+                                    ? 0.0F
+                                    : float.Parse(m.Groups[6].Value, CultureInfo.InvariantCulture);
+                 string remaining = string.Empty;
+                 if (m.Groups[7].Value != string.Empty)
+                 {
+                     remaining = m.Groups[7].Value + ":" + m.Groups[8].Value + ":" + m.Groups[9].Value;
+                 }
+                 if (string.IsNullOrEmpty(remaining))
+                 {
+                     remaining = "Calculating ...";
+                 }
+                 Console.WriteLine("Current Task: {0} Total Tasks {1} Precent: {2} FPS {3} avgFPS {4} Remaining {5}", currentTask, totalTasks, percent, currentFps, avgFps, remaining);
+             }
+             else
+             {
+                 ShowOutput(e.Data, ConsoleColor.Green, "Output");
+             }
         }
 
         static void ShowOutput(string data, ConsoleColor color, string type)
