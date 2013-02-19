@@ -61,43 +61,7 @@ namespace HandbrakeCluster
             }
         }
 
-        static void con_onMessageReceived(byte[] message)
-        {
-            try
-            {
-                MemoryStream ms = new MemoryStream(message);
-                var msg = Serializer.Deserialize<ProcessMessage>(ms);
-                Process p = new Process();
-
-                string cmdLine = string.Format(msg.CommandLine, msg.OrignalFileURL, msg.DestinationURL);
-                Console.WriteLine("Recieved message. Commandline: {0}", cmdLine);
-                Console.WriteLine("Starting at {0}", DateTime.Now);
-                Stopwatch st = new Stopwatch();
-                st.Start();
-                p.StartInfo = new ProcessStartInfo() { 
-                        Arguments = cmdLine, 
-                        UseShellExecute = false, 
-                        FileName = ConfigurationManager.AppSettings["HandbrakeEXE"],
-                        RedirectStandardOutput = true, 
-                        RedirectStandardError = true
-                };
-                p.OutputDataReceived += p_OutputDataReceived;
-
-                p.ErrorDataReceived += p_ErrorDataReceived;
-
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-                p.WaitForExit();
-                Console.WriteLine("Finsihed at {0} - Total time: {1}", DateTime.Now, st.Elapsed);                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Something went wrong... {0}", ex.Message);
-                throw;
-            }
-        }
-
+     
         static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
