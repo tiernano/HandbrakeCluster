@@ -81,7 +81,10 @@ namespace HandbrakeCluster
         static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             //todo: write this back to a central place, possibly parse the info... but for now, just write to console...
-
+            if (e.Data == null)
+            {
+                return;
+            }
             //most of this block of code was taken from the Handbrake App... (C) the handbrake guys...
              Match m = Regex.Match(e.Data,@"^Encoding: task ([0-9]*) of ([0-9]*), ([0-9]*\.[0-9]*) %( \(([0-9]*\.[0-9]*) fps, avg ([0-9]*\.[0-9]*) fps, ETA ([0-9]{2})h([0-9]{2})m([0-9]{2})s\))?");
 
@@ -105,7 +108,7 @@ namespace HandbrakeCluster
                  {
                      remaining = "Calculating ...";
                  }
-                 Console.WriteLine("Current Task: {0} Total Tasks {1} Precent: {2} FPS {3} avgFPS {4} Remaining {5}", currentTask, totalTasks, percent, currentFps, avgFps, remaining);
+                 Console.WriteLine("Current Task: {0}/{1} {2}% FPS {3} avgFPS {4} Remaining {5}", currentTask, totalTasks, percent, currentFps, avgFps, remaining);
              }
              else
              {
