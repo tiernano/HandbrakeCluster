@@ -4,13 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Messaging;
 using HandbrakeCluster.Common;
-<<<<<<< HEAD
-=======
-using ProtoBuf;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Globalization;
->>>>>>> eb07953... parsing the result from Handbrake
 
 namespace HandbrakeCluster
 {
